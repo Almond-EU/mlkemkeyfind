@@ -1,0 +1,7 @@
+[package]
+name = "rusttest"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ml-kem = { version = "0.3.2", features = ["getrandom", "zeroize"] }
