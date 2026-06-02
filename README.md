@@ -1,3 +1,11 @@
+
+<p align="center">
+    <picture>
+        <img alt="Logo of the tool mlkemkeyfind" width="500" src="https://github.com/Almond-EU/mlkemkeyfind/blob/main/img/logo.svg">
+    </picture>
+</p>
+
+
 # ML-KEM key find
 
 This tool search and find for ML-KEM secret polynomials in memory (in live process or in a file dump), and try to reconstruct a secret key or an encapsulated shared secret.
