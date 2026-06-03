@@ -75,6 +75,8 @@ If provided, the secret polynomials found will be interpreted as the ones used f
 
 ## Examples
 
+In these examples, ML-KEM-768 is used, so the secret vector $\mathbf s$ is composed of **three** secret polynomials.
+
 ### Golang
 
 The file `test/go/gotest1/gotest1.go` contains a simple example using `crypto/mlkem` that generates a key pair and makes an encapsulation.
@@ -120,7 +122,7 @@ According to the results:
 - the Golang implementation uses coefficient reduced in $[0, 3328]$;
 - out of the 7 secret polynomials found, 3 were used to reconstruct the private key;
 - the shared secret was recovered with two methods:
-  - one of the secret polynomials corresponds to an encapsulation vector that was used to recover the shared secret;
+  - three of the secret polynomials correspond to an encapsulation vector that was used to recover the shared secret;
   - the message polynomial was also found in memory and the shared secret recovered directly.
 
 A second example using the experimental module *runtime/secret* to clean the memory is given in `test/gotest2/gotest2.go`.
@@ -188,9 +190,8 @@ According to these results:
 - the shared secret is recovered from two methods (same as in the Golang example);
 - the other secret polynomials were insufficient to recover the private key.
 
-Indeed, an analysis of the file `poly.bin` shows that only 3 distincts secret polynomials were found: each of them is present twice.
-Since one of them is the encapsulation vector, then only two remains.
-However, ML-KEM-768 secret vector is composed of three polynomials.
+> Indeed, an analysis of the file `poly.bin` shows that only 3 distincts secret polynomials were found: each of them is present twice.
+> Since three of them are used for the encapsulation vector, then none of the secret polynomials of the secret key remain.
 
 ### OpenSSH
 
@@ -206,7 +207,7 @@ The client key-exchange contains the ephemeral public key.
 
 The server key-exchange contains the ciphertext.
 
-> Again, ignore what is presented by Wireshark, take the whole bloc and remove the last 32 bytes.
+> Again, ignore what is presented by Wireshark, take the whole block and remove the last 32 bytes.
 
 Now, spy on the process to find secret polynomials:
 
@@ -229,11 +230,10 @@ According to these results:
 
 - the implementation uses coefficients centered around 0;
 - the shared secret is recovered from two methods (same as in the Golang and Rust examples);
-- the secret key was not recovered despite many secret polynomails found.
+- the secret key was not recovered despite many secret polynomials found.
 
 > The analysis of the file `poly.bin` revealed that many duplicates are present.
-> Only three distincts polynomials were found, and one of them is the encapsulation vector.
-> The last two were insufficient to reconstruct the secret key which requires three secret polynomials.
+> Only three distincts polynomials were found and correspond to the encapsulation vector, so none remains for the secret key.
 
 ## Changelog
 
